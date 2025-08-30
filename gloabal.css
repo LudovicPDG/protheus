@@ -1,18 +1,113 @@
 body {
-  background: linear-gradient(
-    135deg,
-    rgb(106, 0, 255) 0%,
-    rgb(86, 0, 205) 50%,
-    rgb(66, 0, 155) 100%
-  );
+  background: #000;
   min-height: 100vh;
   position: relative;
+  margin: 0;
+  padding: 0;
+  font-family: "Courier New", "Monaco", "Menlo", monospace;
+  overflow-x: hidden;
 }
 
-/* Enhance the overall look with subtle animations */
+/* Matrix-style scrollbar */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+  scrollbar-color: rgba(0, 255, 65, 0.3) transparent;
+  box-sizing: border-box;
+}
+
+/* Matrix-style digital grid background */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+      90deg,
+      rgba(0, 255, 65, 0.03) 1px,
+      transparent 1px
+    ),
+    linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  z-index: -2;
+  animation: gridShift 20s linear infinite;
+}
+
+@keyframes gridShift {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+main {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding-bottom: 150px; /* Space for footer */
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 90%;
+  text-align: center;
+}
+
+/* Matrix digital squares */
+.matrix-squares {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.matrix-square {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: rgba(0, 255, 65, 0.1);
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  animation: matrixMove 15s linear infinite;
+}
+
+.matrix-square:nth-child(odd) {
+  background: rgba(0, 255, 65, 0.15);
+  border-color: rgba(0, 255, 65, 0.4);
+}
+
+.matrix-square:nth-child(3n) {
+  background: rgba(0, 200, 255, 0.1);
+  border-color: rgba(0, 200, 255, 0.3);
+}
+
+@keyframes matrixMove {
+  0% {
+    transform: translateY(-100vh) translateX(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) translateX(100px) rotate(360deg);
+    opacity: 0;
+  }
 }
 
 *::-webkit-scrollbar {
@@ -24,21 +119,21 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 255, 65, 0.3);
   border-radius: 3px;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 255, 65, 0.5);
 }
 
-/* Selection styling */
+/* Matrix-style selection */
 ::selection {
-  background: rgba(255, 215, 0, 0.3);
-  color: white;
+  background: rgba(0, 255, 65, 0.3);
+  color: #00ff41;
 }
 
 ::-moz-selection {
-  background: rgba(255, 215, 0, 0.3);
-  color: white;
+  background: rgba(0, 255, 65, 0.3);
+  color: #00ff41;
 }

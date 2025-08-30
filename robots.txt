@@ -1,0 +1,28 @@
+User-agent: *
+Allow: /
+
+# Allow crawling of all language versions
+Allow: /?lang=en
+Allow: /?lang=ar  
+Allow: /?lang=ch
+
+# Block any admin or development files
+Disallow: /dev/
+Disallow: /test/
+Disallow: /.git/
+Disallow: /node_modules/
+Disallow: /components/
+Disallow: /js/
+Disallow: /lang/
+
+# Allow important assets
+Allow: /gloabal.css
+Allow: /favicon.ico
+Allow: /robots.txt
+Allow: /sitemap.xml
+
+# Sitemap location
+Sitemap: https://protheus.ai/sitemap.xml
+
+# Crawl delay (be respectful)
+Crawl-delay: 1

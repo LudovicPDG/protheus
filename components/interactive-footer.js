@@ -3,24 +3,31 @@ class InteractiveFooter extends HTMLElement {
     super();
     this.attachShadow({ mode: "open" });
     this.currentPlaceholderIndex = 0;
-    this.placeholders = [
-      "Website That Predicts Your Future",
-      "Infinite Website",
-      "Time-Traveling Webpage",
-      "Mind-Reading Application",
-      "Reality-Bending Platform",
-      "Quantum Computing Interface",
-      "Parallel Universe Portal",
-    ];
-    this.isTyping = false;
+    const raw = this.getAttribute("placeholders");
+    console.log("Raw placeholders attribute:", raw);
+    if (raw) {
+      try {
+        this.placeholders = JSON.parse(decodeURIComponent(raw));
+      } catch (e) {
+        console.warn("Invalid placeholders JSON", e);
+        this.placeholders = [];
+      }
+    }
+    console.log("InteractiveFooter placeholders:", this.placeholders);
   }
-
   connectedCallback() {
     this.render();
     this.startPlaceholderAnimation();
   }
 
+  // Method to update placeholders with translations
+  updatePlaceholders(newPlaceholders) {
+    this.placeholders = newPlaceholders;
+    this.currentPlaceholderIndex = 0; // Reset index
+  }
+
   render() {
+    const t = window.currentTranslation || window.translations?.en || {};
     this.shadowRoot.innerHTML = `
       <style>
         :host {
@@ -30,12 +37,13 @@ class InteractiveFooter extends HTMLElement {
           right: 0;
           background: linear-gradient(
             180deg,
-            rgba(106, 0, 255, 0) 0%,
-            rgba(106, 0, 255, 0.8) 50%,
-            rgba(86, 0, 205, 1) 100%
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 20, 0, 0.8) 50%,
+            rgba(0, 40, 0, 1) 100%
           );
           padding: 2rem;
           z-index: 1000;
+          border-top: 1px solid rgba(0, 255, 65, 0.2);
         }
 
         .footer-container {
@@ -48,23 +56,32 @@ class InteractiveFooter extends HTMLElement {
           position: relative;
           display: flex;
           align-items: center;
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 50px;
+          background: rgba(0, 20, 0, 0.6);
+          border-radius: 8px;
           padding: 0.5rem;
           backdrop-filter: blur(10px);
-          border: 2px solid rgba(255, 255, 255, 0.2);
+          border: 2px solid rgba(0, 255, 65, 0.3);
           transition: all 0.3s ease;
+          box-shadow: 
+            inset 0 0 20px rgba(0, 255, 65, 0.1),
+            0 0 20px rgba(0, 255, 65, 0.1);
         }
 
         .input-container:hover {
-          border-color: rgba(255, 255, 255, 0.4);
-          background: rgba(255, 255, 255, 0.15);
+          border-color: rgba(0, 255, 65, 0.5);
+          background: rgba(0, 30, 0, 0.7);
+          box-shadow: 
+            inset 0 0 30px rgba(0, 255, 65, 0.15),
+            0 0 30px rgba(0, 255, 65, 0.2);
         }
 
         .input-container.focused {
-          border-color: rgba(255, 215, 0, 0.6);
-          background: rgba(255, 255, 255, 0.2);
-          box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+          border-color: rgba(0, 255, 65, 0.8);
+          background: rgba(0, 40, 0, 0.8);
+          box-shadow: 
+            inset 0 0 40px rgba(0, 255, 65, 0.2),
+            0 0 40px rgba(0, 255, 65, 0.3),
+            0 0 80px rgba(0, 255, 65, 0.1);
         }
 
         .prompt-input {
@@ -74,23 +91,24 @@ class InteractiveFooter extends HTMLElement {
           outline: none;
           padding: 1rem 1.5rem;
           font-size: 1.1rem;
-          color: white;
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          color: #00ff41;
+          font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
+          letter-spacing: 0.5px;
         }
 
         .prompt-input::placeholder {
-          color: rgba(255, 255, 255, 0.6);
+          color: rgba(0, 255, 65, 0.4);
           transition: color 0.3s ease;
         }
 
         .prompt-input:focus::placeholder {
-          color: rgba(255, 255, 255, 0.4);
+          color: rgba(0, 255, 65, 0.2);
         }
 
         .submit-button {
-          background: linear-gradient(45deg, #ffd700, #ffed4e);
-          border: none;
-          border-radius: 50%;
+          background: linear-gradient(45deg, #00ff41, #00cc33);
+          border: 2px solid rgba(0, 255, 65, 0.5);
+          border-radius: 8px;
           width: 50px;
           height: 50px;
           margin-right: 0.5rem;
@@ -101,11 +119,18 @@ class InteractiveFooter extends HTMLElement {
           transition: all 0.3s ease;
           position: relative;
           overflow: hidden;
+          box-shadow: 
+            inset 0 0 10px rgba(0, 255, 65, 0.3),
+            0 0 10px rgba(0, 255, 65, 0.2);
         }
 
         .submit-button:hover {
-          transform: scale(1.1);
-          box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+          transform: scale(1.05);
+          box-shadow: 
+            inset 0 0 20px rgba(0, 255, 65, 0.5),
+            0 0 20px rgba(0, 255, 65, 0.4),
+            0 0 40px rgba(0, 255, 65, 0.2);
+          border-color: rgba(0, 255, 65, 0.8);
         }
 
         .submit-button:active {
@@ -119,30 +144,10 @@ class InteractiveFooter extends HTMLElement {
           left: 50%;
           width: 0;
           height: 0;
-          border-left: 8px solid #6a00ff;
+          border-left: 8px solid #000;
           border-top: 6px solid transparent;
           border-bottom: 6px solid transparent;
           transform: translate(-30%, -50%);
-        }
-
-        .typing-indicator {
-          position: absolute;
-          right: 70px;
-          top: 50%;
-          transform: translateY(-50%);
-          display: none;
-          color: rgba(255, 255, 255, 0.7);
-          font-size: 0.9rem;
-        }
-
-        .typing-indicator.show {
-          display: block;
-          animation: pulse 1.5s infinite;
-        }
-
-        @keyframes pulse {
-          0%, 100% { opacity: 0.4; }
-          50% { opacity: 1; }
         }
 
         .placeholder-animation {
@@ -150,22 +155,24 @@ class InteractiveFooter extends HTMLElement {
           top: 50%;
           left: 1.5rem;
           transform: translateY(-50%);
-          color: rgba(255, 255, 255, 0.6);
+          color: rgba(0, 255, 65, 0.6);
           font-size: 1.1rem;
+          font-family: 'Courier New', 'Monaco', 'Menlo', monospace;
           pointer-events: none;
           white-space: nowrap;
           overflow: hidden;
           width: calc(100% - 120px);
+          letter-spacing: 0.5px;
         }
 
         .placeholder-text {
           display: inline-block;
-          border-right: 2px solid rgba(255, 255, 255, 0.6);
+          border-right: 2px solid rgba(0, 255, 65, 0.8);
           animation: blink 1s infinite;
         }
 
         @keyframes blink {
-          0%, 50% { border-color: rgba(255, 255, 255, 0.6); }
+          0%, 50% { border-color: rgba(0, 255, 65, 0.8); }
           51%, 100% { border-color: transparent; }
         }
 
@@ -196,13 +203,17 @@ class InteractiveFooter extends HTMLElement {
             class="prompt-input" 
             placeholder=""
           />
-          <div class="typing-indicator">...</div>
           <button class="submit-button" type="submit"></button>
         </div>
       </div>
     `;
 
     this.setupEventListeners();
+
+    // Update placeholders with current translations
+    if (t.footer?.placeholders) {
+      this.updatePlaceholders(t.footer.placeholders);
+    }
   }
 
   setupEventListeners() {
@@ -247,7 +258,6 @@ class InteractiveFooter extends HTMLElement {
   handleSubmit(value) {
     if (!value.trim()) return;
 
-    // Dispatch custom event with the input value
     this.dispatchEvent(
       new CustomEvent("prompt-submitted", {
         detail: { prompt: value.trim() },
@@ -255,20 +265,19 @@ class InteractiveFooter extends HTMLElement {
       })
     );
 
-    // Clear input
     const input = this.shadowRoot.querySelector(".prompt-input");
     input.value = "";
 
-    // Show placeholder again
     const placeholder = this.shadowRoot.querySelector(".placeholder-animation");
     placeholder.style.display = "block";
 
-    // Add visual feedback
     const button = this.shadowRoot.querySelector(".submit-button");
-    button.style.background = "linear-gradient(45deg, #00ff00, #32ff32)";
+    button.style.background = "linear-gradient(45deg, #00ffff, #00cccc)";
+    button.style.boxShadow = "0 0 30px rgba(0, 255, 255, 0.8)";
     setTimeout(() => {
-      button.style.background = "linear-gradient(45deg, #ffd700, #ffed4e)";
-    }, 200);
+      button.style.background = "linear-gradient(45deg, #00ff41, #00cc33)";
+      button.style.boxShadow = "";
+    }, 300);
   }
 
   async startPlaceholderAnimation() {
@@ -278,19 +287,11 @@ class InteractiveFooter extends HTMLElement {
     while (true) {
       const currentText = this.placeholders[this.currentPlaceholderIndex];
 
-      // Type out the text
       await this.typeText(placeholderElement, currentText);
-
-      // Wait before erasing
       await this.wait(2000);
-
-      // Erase the text
       await this.eraseText(placeholderElement);
-
-      // Wait before next text
       await this.wait(500);
 
-      // Move to next placeholder
       this.currentPlaceholderIndex =
         (this.currentPlaceholderIndex + 1) % this.placeholders.length;
     }
@@ -300,7 +301,7 @@ class InteractiveFooter extends HTMLElement {
     element.textContent = "";
     for (let i = 0; i <= text.length; i++) {
       element.textContent = text.substring(0, i);
-      await this.wait(50 + Math.random() * 50); // Variable typing speed
+      await this.wait(50 + Math.random() * 50);
     }
   }
 
