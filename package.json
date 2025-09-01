@@ -11,5 +11,10 @@
   },
   "scripts": {
     "dev": "bun server.ts"
+  },
+  "dependencies": {
+    "@huggingface/transformers": "^3.7.2",
+    "onnxruntime-node": "^1.22.0-rev",
+    "onnxruntime-web": "^1.22.0"
   }
 }

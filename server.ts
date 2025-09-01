@@ -51,10 +51,54 @@ const server = Bun.serve({
     },
 
     "/favicon.ico": async () => {
-      console.log("Serving ./favicon.ico");
+      console.log("Serving ./favicon/favicon.ico");
       try {
-        return new Response(Bun.file("./favicon.ico"), {
+        return new Response(Bun.file("./favicon/favicon.ico"), {
           headers: { "Content-Type": "image/x-icon" },
+        });
+      } catch {
+        return new Response(null, { status: 204 });
+      }
+    },
+
+    "/favicon-96x96.png": async () => {
+      console.log("Serving ./favicon/favicon-96x96.png");
+      try {
+        return new Response(Bun.file("./favicon/favicon-96x96.png"), {
+          headers: { "Content-Type": "image/png" },
+        });
+      } catch {
+        return new Response(null, { status: 204 });
+      }
+    },
+
+    "/favicon.svg": async () => {
+      console.log("Serving ./favicon/favicon.svg");
+      try {
+        return new Response(Bun.file("./favicon/favicon.svg"), {
+          headers: { "Content-Type": "image/svg+xml" },
+        });
+      } catch {
+        return new Response(null, { status: 204 });
+      }
+    },
+
+    "/apple-touch-icon.png": async () => {
+      console.log("Serving ./favicon/apple-touch-icon.png");
+      try {
+        return new Response(Bun.file("./favicon/apple-touch-icon.png"), {
+          headers: { "Content-Type": "image/png" },
+        });
+      } catch {
+        return new Response(null, { status: 204 });
+      }
+    },
+
+    "/site.webmanifest": async () => {
+      console.log("Serving ./favicon/site.webmanifest");
+      try {
+        return new Response(Bun.file("./favicon/site.webmanifest"), {
+          headers: { "Content-Type": "application/manifest+json" },
         });
       } catch {
         return new Response(null, { status: 204 });

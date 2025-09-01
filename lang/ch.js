@@ -15,13 +15,13 @@ const translations_ch = {
 
   // Interactive footer placeholders
   placeholders: [
-    "数字现实构造器",
-    "量子代码生成器",
-    "矩阵界面构建器",
-    "虚拟世界创造者",
-    "人工意识平台",
-    "时空网络门户",
-    "神经网络网站",
+    "个人博客",
+    "简历 / CV 网站",
+    "众筹页面",
+    "私人日记网站",
+    "笔记和待办事项网站",
+    "Canva 风格网站",
+    "梦境记录网站",
   ],
 
   // Footer content

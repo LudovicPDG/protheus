@@ -15,13 +15,13 @@ const translations_en = {
 
   // Interactive footer placeholders
   placeholders: [
-    "Digital Reality Constructor",
-    "Quantum Code Generator",
-    "Matrix Interface Builder",
-    "Virtual World Creator",
-    "AI Consciousness Platform",
-    "Time-Space Web Portal",
-    "Neural Network Website",
+    "Personal Blog",
+    "Resume / CV Site",
+    "Crowdfunding Page",
+    "Private Journal Website",
+    "Notes & To-Do Website",
+    "Canva-Style Site",
+    "Dream Tracker Website",
   ],
 
   // Footer content
@@ -37,15 +37,6 @@ const translations_en = {
     emailPlaceholder: "Enter your digital address",
     subscribe: "CONNECT TO MATRIX",
     copyright: "© 2024 Protheus Digital Matrix. All realities reserved.",
-    placeholders: [
-      "Personal Blog",
-      "Resume / CV Site",
-      "Crowdfunding Page",
-      "Private Journal Website",
-      "Notes & To-Do Website",
-      "Canva-Style Site",
-      "Dream Tracker Website",
-    ],
   },
 
   // System messages

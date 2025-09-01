@@ -15,13 +15,13 @@ const translations_fr = {
 
   // Interactive footer placeholders
   placeholders: [
-    "Constructeur de Réalité Numérique",
-    "Générateur de Code Quantique",
-    "Constructeur d'Interface Matrix",
-    "Créateur de Mondes Virtuels",
-    "Plateforme de Conscience IA",
-    "Portail Web Espace-Temps",
-    "Site Web de Réseau Neuronal",
+    "Blog Personnel",
+    "Site de CV / Résumé",
+    "Page de Financement Participatif",
+    "Site de Journal Privé",
+    "Site de Notes et Tâches",
+    "Site de Style Canva",
+    "Site de Suivi des Rêves",
   ],
 
   // Footer content
